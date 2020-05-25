@@ -6,12 +6,14 @@ from MyBlogApp import app, db, bcrypt
 from MyBlogApp.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
 from MyBlogApp.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
+from datetime import datetime
 
 
 @app.route('/')
 def home():
     posts = Post.query.all() #grap all the post and place on the homepage
-    return render_template('home.html', posts=posts)
+    time_of_day = greetings()
+    return render_template('home.html', posts=posts, time_of_day=time_of_day)
 
 
 @app.route('/about')
@@ -137,3 +139,15 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('home'))
+
+def greetings():
+    currentTime = datetime.now()
+    currentTime.hour
+    # time_of_day = "Test"
+    if currentTime.hour < 12:
+        time_of_day = 'Good morning'
+    elif 12 <= currentTime.hour < 18:
+        time_of_day = 'Good afternoon'
+    else:
+        time_of_day = 'Good evening'
+    return( time_of_day)
